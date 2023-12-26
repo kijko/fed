@@ -1,16 +1,16 @@
-<mxfile host="app.diagrams.net" modified="2023-12-26T15:13:22.252Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0" etag="Mme1FzTHfmyG6oZ4otJu" version="22.1.11" type="device">
+<mxfile host="app.diagrams.net" modified="2023-12-26T15:19:33.609Z" agent="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:120.0) Gecko/20100101 Firefox/120.0" etag="WRYgm2qnnYCI1u917Nxf" version="22.1.11" type="device">
   <diagram name="Page-1" id="uLd8dC6Xyf0cxPPE00Iv">
     <mxGraphModel dx="1434" dy="698" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="9ynftAAcvcwZTl9T86qA-1" value="Browser Application" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#434445;aspect=fixed;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.vvd.web_browser;" vertex="1" parent="1">
+        <mxCell id="9ynftAAcvcwZTl9T86qA-1" value="a) Browser Application" style="sketch=0;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;fillColor=#434445;aspect=fixed;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;outlineConnect=0;shape=mxgraph.vvd.web_browser;" vertex="1" parent="1">
           <mxGeometry x="90" y="117" width="169.01" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="9ynftAAcvcwZTl9T86qA-2" value="Backend server" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" vertex="1" parent="1">
-          <mxGeometry x="410" y="120" width="92.3" height="117" as="geometry" />
+        <mxCell id="9ynftAAcvcwZTl9T86qA-2" value="b) Backend server" style="image;points=[];aspect=fixed;html=1;align=center;shadow=0;dashed=0;image=img/lib/allied_telesis/computer_and_terminals/Server_Desktop.svg;" vertex="1" parent="1">
+          <mxGeometry x="409" y="120" width="92.3" height="117" as="geometry" />
         </mxCell>
-        <mxCell id="9ynftAAcvcwZTl9T86qA-3" value="Relational database" style="image;html=1;image=img/lib/clip_art/computers/Database_128x128.png" vertex="1" parent="1">
+        <mxCell id="9ynftAAcvcwZTl9T86qA-3" value="c) Relational database" style="image;html=1;image=img/lib/clip_art/computers/Database_128x128.png" vertex="1" parent="1">
           <mxGeometry x="630" y="139" width="80" height="80" as="geometry" />
         </mxCell>
         <mxCell id="9ynftAAcvcwZTl9T86qA-6" value="HTTP/S" style="shape=flexArrow;endArrow=classic;html=1;rounded=0;" edge="1" parent="1">
