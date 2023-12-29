@@ -30,6 +30,7 @@ class SecurityConfig {
     @Bean
     SecurityWebFilterChain springSecurityFilterChain(ServerHttpSecurity http) {
         http
+        .csrf().disable()
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers("${API_BASE_PATH}/sign-in").permitAll()
                         .anyExchange().authenticated()
