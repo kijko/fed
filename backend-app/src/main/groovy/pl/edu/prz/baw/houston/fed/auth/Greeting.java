@@ -1,4 +1,4 @@
-package pl.edu.prz.baw.houston.fed;
+package pl.edu.prz.baw.houston.fed.auth;
 
 public class Greeting {
 
