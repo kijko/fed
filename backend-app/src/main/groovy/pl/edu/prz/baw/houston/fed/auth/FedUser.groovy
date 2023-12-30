@@ -9,6 +9,17 @@ abstract class FedUser {
         this.blocked = blocked
     }
 
+    static FedUser ofType(String type, String uuid, boolean blocked) {
+        switch (type) {
+            case 'ADMIN':
+                return new FedAdmin(uuid, blocked)
+            case 'CLIENT':
+                return new FedClient(uuid, blocked)
+            default:
+                return new FedBankEmployee(uuid, blocked)
+        }
+    }
+
     String getUuid() {
         return uuid
     }

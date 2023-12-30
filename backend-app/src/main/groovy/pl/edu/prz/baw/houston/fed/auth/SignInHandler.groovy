@@ -4,8 +4,10 @@ import org.jooq.impl.DSL
 import org.jooq.impl.DefaultDSLContext
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import org.springframework.core.env.Environment
 import org.springframework.http.HttpStatusCode
 import org.springframework.http.MediaType
+import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -19,14 +21,20 @@ import java.security.MessageDigest
 class SignInHandler implements RouteHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(SignInHandler.class)
 
+    private final Environment env
     private final DefaultDSLContext ctx
 
-    SignInHandler(DefaultDSLContext ctx) {
+    SignInHandler(DefaultDSLContext ctx, Environment env) {
+        this.env = env
         this.ctx = ctx
     }
 
     @Override
     Mono<ServerResponse> handle(ServerRequest request) {
+        ReactiveSecurityContextHolder.getContext().map { secCtx ->
+            LOGGER.info(secCtx)
+        }
+
         return request
                 .bodyToMono(SignInRequest.class)
                 .flatMap {
@@ -43,21 +51,12 @@ class SignInHandler implements RouteHandler {
                                     .where(DSL.field('login_hash').eq(loginHash)
                                             .and(DSL.field('password_hash').eq(passhash)))
                     ).map { rec ->
-                        String type = rec.get('type') as String
-
-                        switch (type) {
-                            case 'ADMIN':
-                                return new FedAdmin(rec.get('uuid') as String, rec.get('blocked') as boolean)
-                            case 'CLIENT':
-                                return new FedClient(rec.get('uuid') as String, rec.get('blocked') as boolean)
-                            default:
-                                return new FedBankEmployee(rec.get('uuid') as String, rec.get('blocked') as boolean)
-                        }
+                        FedUser.ofType(rec.get('type') as String, rec.get('uuid') as String, rec.get('blocked') as boolean)
                     }.defaultIfEmpty(NullUser.INSTANCE)
                 }
         .flatMap { user ->
             if (user !== NullUser.INSTANCE && !user.blocked) {
-                JWT jwt = new JWT(user.uuid, getUserType(user))
+                JWT jwt = new JWT(user.uuid, getUserType(user), env.getProperty('fed.auth.jwt-secret-b64'))
                 def signInRes = new SignInResponse(jwt.toString(), jwt.expireDateTimeUTC, jwt.type)
                 return ServerResponse.ok()
                         .contentType(MediaType.APPLICATION_JSON)
