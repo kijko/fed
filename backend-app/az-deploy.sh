@@ -1,5 +1,6 @@
 #! /bin/sh
 
+./gradlew clean bootJar && \
 az webapp \
     deploy \
     --resource-group fed \
