@@ -38,3 +38,4 @@ out/
 
 application-prod.properties
 application-dev.properties
+src/main/resources/assets

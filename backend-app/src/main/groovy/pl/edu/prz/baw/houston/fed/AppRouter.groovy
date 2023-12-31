@@ -1,8 +1,11 @@
 package pl.edu.prz.baw.houston.fed
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.core.io.ClassPathResource
+import org.springframework.core.io.Resource
 import org.springframework.http.MediaType
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions
@@ -10,9 +13,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import pl.edu.prz.baw.houston.fed.auth.SignInHandler
 import pl.edu.prz.baw.houston.fed.usermgmt.UserManagementHandler
 
-import static org.springframework.web.reactive.function.server.RequestPredicates.POST
-import static org.springframework.web.reactive.function.server.RequestPredicates.GET
-import static org.springframework.web.reactive.function.server.RequestPredicates.accept
+import static org.springframework.web.reactive.function.server.RequestPredicates.*
 
 @Configuration
 class AppRouter {
@@ -22,6 +23,8 @@ class AppRouter {
     SignInHandler signInHandler
     @Autowired
     UserManagementHandler userManagementHandler
+    @Value("classpath:/assets/index.html")
+    Resource indexHtml
 
     @Bean
     RouterFunction<ServerResponse> router() {
@@ -35,6 +38,15 @@ class AppRouter {
                         GET("$API_BASE_PATH/users"),
                         userManagementHandler::handle
                 )
+                .route(GET("/"), {
+                    ServerResponse.ok().contentType(MediaType.TEXT_HTML).bodyValue(indexHtml)
+                })
+                .resources('/static/**', new ClassPathResource("assets/static/"))
+                .resources('/*.ico', new ClassPathResource('assets/'))
+                .resources('/*.png', new ClassPathResource('assets/'))
+                .resources('/*.json', new ClassPathResource('assets/'))
+                .resources('/*.txt', new ClassPathResource('assets/'))
         .build()
     }
+
 }
