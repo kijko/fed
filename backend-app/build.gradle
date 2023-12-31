@@ -17,17 +17,24 @@ repositories {
 }
 
 dependencies {
+	implementation 'org.apache.groovy:groovy'
+
+	// DB
+	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.1'
+
+	// SPRING
 	implementation 'org.springframework.boot:spring-boot-starter-jooq'
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
-	implementation 'org.apache.groovy:groovy'
-	implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.1'
-
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'
 	testImplementation 'org.springframework.security:spring-security-test'
+
+    // JWT
+	implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.12.3'
+	runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.12.3'
 }
 
 tasks.named('test') {
