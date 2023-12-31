@@ -7,8 +7,8 @@ function LoginForm() {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-//    const domain = 'https://fed-app.azurewebsites.net'
-    const domain = 'http://localhost:8080'
+    const domain = 'https://fed-app.azurewebsites.net'
+//    const domain = 'http://localhost:8080'
     try {
       const response = await axios.post(`${domain}/api/sign-in`, {
         login,
