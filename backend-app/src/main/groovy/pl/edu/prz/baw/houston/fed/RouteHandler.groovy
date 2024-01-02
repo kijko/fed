@@ -5,5 +5,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import reactor.core.publisher.Mono
 
 interface RouteHandler {
-    Mono<ServerResponse> handle(ServerRequest request)
+    default Mono<ServerResponse> get(ServerRequest request) { return Mono.empty() }
+    default Mono<ServerResponse> post(ServerRequest request) { return Mono.empty() }
+    default Mono<ServerResponse> patch(ServerRequest request) { return Mono.empty() }
 }
