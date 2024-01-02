@@ -712,6 +712,11 @@
 };
             defs["inline_response_200_1"] = {
   "properties" : {
+    "id" : {
+      "type" : "string",
+      "description" : "Jednoznaczny identyfikator uzytkownika",
+      "example" : "582cbb20-dcfa-4ad7-bf73-32f3e9af5299"
+    },
     "firstname" : {
       "type" : "string",
       "description" : "Imie usera",
@@ -737,6 +742,36 @@
             defs["inline_response_200_2"] = {
   "type" : "object",
   "properties" : {
+    "firstname" : {
+      "type" : "string",
+      "description" : "Imie usera",
+      "example" : "Andrzej"
+    },
+    "lastname" : {
+      "type" : "string",
+      "description" : "Nazwisko usera",
+      "example" : "Brzęczyszczykiewicz"
+    },
+    "type" : {
+      "type" : "string",
+      "description" : "Typ użytkownika. \"ADMIN\", \"CLIENT\" lub \"BANK_EMPLOYEE\"",
+      "example" : "CLIENT"
+    },
+    "blocked" : {
+      "type" : "boolean",
+      "description" : "Flaga mówiąca czy użytkownik jest zablokowany",
+      "example" : false
+    }
+  }
+};
+            defs["inline_response_200_3"] = {
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string",
+      "description" : "Jednoznaczny identyfikator uzytkownika",
+      "example" : "582cbb20-dcfa-4ad7-bf73-32f3e9af5299"
+    },
     "firstname" : {
       "type" : "string",
       "description" : "Imie usera",
@@ -802,7 +837,7 @@
     }
   }
 };
-            defs["users_body_1"] = {
+            defs["users_userId_body"] = {
   "type" : "object",
   "properties" : {
     "blocked" : {
@@ -1837,7 +1872,7 @@ except ApiException as e:
                         <p class="marked"></p>
                         <p></p>
                         <br />
-                        <pre class="prettyprint language-html prettyprinted" data-type="patch"><code><span class="pln">/users</span></code></pre>
+                        <pre class="prettyprint language-html prettyprinted" data-type="patch"><code><span class="pln">/users/{userId}</span></code></pre>
                         <p>
                           <h3>Usage and SDK Samples</h3>
                         </p>
@@ -1860,7 +1895,7 @@ except ApiException as e:
                            <pre class="prettyprint"><code class="language-bsh">curl -X PATCH\
 -H "Accept: application/json"\
 -H "Content-Type: application/json"\
-"https://fed-app.azurewebsites.net/api/users"</code></pre>
+"https://fed-app.azurewebsites.net/api/users/{userId}"</code></pre>
                           </div>
                           <div class="tab-pane" id="examples-ZarzdzanieUytkownikami-patchUser-0-java">
                             <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
@@ -1877,9 +1912,10 @@ public class ZarzdzanieUytkownikamiApiExample {
         
         ZarzdzanieUytkownikamiApi apiInstance = new ZarzdzanieUytkownikamiApi();
         String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
-        Users_body_1 body = ; // Users_body_1 | 
+        String userId = userId_example; // String | ID uzytkownika
+        Users_userId_body body = ; // Users_userId_body | 
         try {
-            inline_response_200_2 result = apiInstance.patchUser(authorization, body);
+            inline_response_200_3 result = apiInstance.patchUser(authorization, userId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ZarzdzanieUytkownikamiApi#patchUser");
@@ -1897,9 +1933,10 @@ public class ZarzdzanieUytkownikamiApiExample {
     public static void main(String[] args) {
         ZarzdzanieUytkownikamiApi apiInstance = new ZarzdzanieUytkownikamiApi();
         String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
-        Users_body_1 body = ; // Users_body_1 | 
+        String userId = userId_example; // String | ID uzytkownika
+        Users_userId_body body = ; // Users_userId_body | 
         try {
-            inline_response_200_2 result = apiInstance.patchUser(authorization, body);
+            inline_response_200_3 result = apiInstance.patchUser(authorization, userId, body);
             System.out.println(result);
         } catch (ApiException e) {
             System.err.println("Exception when calling ZarzdzanieUytkownikamiApi#patchUser");
@@ -1914,14 +1951,16 @@ public class ZarzdzanieUytkownikamiApiExample {
   </div> -->
                             <div class="tab-pane" id="examples-ZarzdzanieUytkownikami-patchUser-0-objc">
                               <pre class="prettyprint"><code class="language-cpp">String *authorization = authorization_example; // Token sesji w formacie "Bearer {TOKEN}"
-Users_body_1 *body = ; //  (optional)
+String *userId = userId_example; // ID uzytkownika
+Users_userId_body *body = ; //  (optional)
 
 ZarzdzanieUytkownikamiApi *apiInstance = [[ZarzdzanieUytkownikamiApi alloc] init];
 
 // [ADMIN ONLY] Zablokuj usera
 [apiInstance patchUserWith:authorization
+    userId:userId
     body:body
-              completionHandler: ^(inline_response_200_2 output, NSError* error) {
+              completionHandler: ^(inline_response_200_3 output, NSError* error) {
                             if (output) {
                                 NSLog(@"%@", output);
                             }
@@ -1937,8 +1976,9 @@ ZarzdzanieUytkownikamiApi *apiInstance = [[ZarzdzanieUytkownikamiApi alloc] init
 
 var api = new SystemRezerwyFederalnejOpenApi30.ZarzdzanieUytkownikamiApi()
 var authorization = authorization_example; // {{String}} Token sesji w formacie "Bearer {TOKEN}"
+var userId = userId_example; // {{String}} ID uzytkownika
 var opts = { 
-  'body':  // {{Users_body_1}} 
+  'body':  // {{Users_userId_body}} 
 };
 var callback = function(error, data, response) {
   if (error) {
@@ -1947,7 +1987,7 @@ var callback = function(error, data, response) {
     console.log('API called successfully. Returned data: ' + data);
   }
 };
-api.patchUser(authorization, opts, callback);
+api.patchUser(authorizationuserId, opts, callback);
 </code></pre>
                             </div>
 
@@ -1970,12 +2010,13 @@ namespace Example
 
             var apiInstance = new ZarzdzanieUytkownikamiApi();
             var authorization = authorization_example;  // String | Token sesji w formacie "Bearer {TOKEN}"
-            var body = new Users_body_1(); // Users_body_1 |  (optional) 
+            var userId = userId_example;  // String | ID uzytkownika
+            var body = new Users_userId_body(); // Users_userId_body |  (optional) 
 
             try
             {
                 // [ADMIN ONLY] Zablokuj usera
-                inline_response_200_2 result = apiInstance.patchUser(authorization, body);
+                inline_response_200_3 result = apiInstance.patchUser(authorization, userId, body);
                 Debug.WriteLine(result);
             }
             catch (Exception e)
@@ -1994,10 +2035,11 @@ require_once(__DIR__ . '/vendor/autoload.php');
 
 $api_instance = new Swagger\Client\ApiZarzdzanieUytkownikamiApi();
 $authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
-$body = ; // Users_body_1 | 
+$userId = userId_example; // String | ID uzytkownika
+$body = ; // Users_userId_body | 
 
 try {
-    $result = $api_instance->patchUser($authorization, $body);
+    $result = $api_instance->patchUser($authorization, $userId, $body);
     print_r($result);
 } catch (Exception $e) {
     echo 'Exception when calling ZarzdzanieUytkownikamiApi->patchUser: ', $e->getMessage(), PHP_EOL;
@@ -2012,10 +2054,11 @@ use WWW::SwaggerClient::ZarzdzanieUytkownikamiApi;
 
 my $api_instance = WWW::SwaggerClient::ZarzdzanieUytkownikamiApi->new();
 my $authorization = authorization_example; # String | Token sesji w formacie "Bearer {TOKEN}"
-my $body = WWW::SwaggerClient::Object::Users_body_1->new(); # Users_body_1 | 
+my $userId = userId_example; # String | ID uzytkownika
+my $body = WWW::SwaggerClient::Object::Users_userId_body->new(); # Users_userId_body | 
 
 eval { 
-    my $result = $api_instance->patchUser(authorization => $authorization, body => $body);
+    my $result = $api_instance->patchUser(authorization => $authorization, userId => $userId, body => $body);
     print Dumper($result);
 };
 if ($@) {
@@ -2033,11 +2076,12 @@ from pprint import pprint
 # create an instance of the API class
 api_instance = swagger_client.ZarzdzanieUytkownikamiApi()
 authorization = authorization_example # String | Token sesji w formacie "Bearer {TOKEN}"
-body =  # Users_body_1 |  (optional)
+userId = userId_example # String | ID uzytkownika
+body =  # Users_userId_body |  (optional)
 
 try: 
     # [ADMIN ONLY] Zablokuj usera
-    api_response = api_instance.patch_user(authorization, body=body)
+    api_response = api_instance.patch_user(authorization, userId, body=body)
     pprint(api_response)
 except ApiException as e:
     print("Exception when calling ZarzdzanieUytkownikamiApi->patchUser: %s\n" % e)</code></pre>
@@ -2046,6 +2090,35 @@ except ApiException as e:
 
                           <h2>Parameters</h2>
 
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">userId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_patchUser_userId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID uzytkownika
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
 
                             <div class="methodsubtabletitle">Header parameters</div>
                             <table id="methodsubtable">
@@ -2093,7 +2166,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/users_body_1"
+        "$ref" : "#/components/schemas/users_userId_body"
       }
     }
   }
@@ -2142,7 +2215,7 @@ except ApiException as e:
   "content" : {
     "application/json" : {
       "schema" : {
-        "$ref" : "#/components/schemas/inline_response_200_2"
+        "$ref" : "#/components/schemas/inline_response_200_3"
       }
     }
   }

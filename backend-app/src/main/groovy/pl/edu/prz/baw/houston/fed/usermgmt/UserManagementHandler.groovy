@@ -1,24 +1,91 @@
 package pl.edu.prz.baw.houston.fed.usermgmt
 
+import org.jooq.impl.DSL
+import org.jooq.impl.DefaultDSLContext
 import org.springframework.http.MediaType
-import org.springframework.security.core.context.ReactiveSecurityContextHolder
 import org.springframework.stereotype.Component
-import org.springframework.web.reactive.function.BodyInserters
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import pl.edu.prz.baw.houston.fed.RouteHandler
-import pl.edu.prz.baw.houston.fed.auth.Greeting
+import pl.edu.prz.baw.houston.fed.auth.AuthUtils
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
 @Component
 class UserManagementHandler implements RouteHandler {
-    @Override
-    Mono<ServerResponse> handle(ServerRequest request) {
-        return ReactiveSecurityContextHolder.getContext().flatMap {
-            return ServerResponse.ok()
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .body(BodyInserters.fromValue(new Greeting("Hello ${it.authentication.principal as String}")))
-        }
+    private final DefaultDSLContext ctx
 
+    UserManagementHandler(DefaultDSLContext ctx) {
+        this.ctx = ctx
+    }
+
+    @Override
+    Mono<ServerResponse> get(ServerRequest request) {
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(Flux.from(ctx.select().from('fed_user'))
+            .map { rec ->
+                return new UserResponse(
+                        rec.get('uuid') as String,
+                        rec.get('firstname') as String,
+                        rec.get('lastname') as String,
+                        rec.get('type') as String,
+                        rec.get('blocked') as boolean
+                )
+            }, UserResponse.class)
+    }
+
+    @Override
+    Mono<ServerResponse> patch(ServerRequest request) {
+        String uuid = request.pathVariable('id')
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(request.bodyToMono(BlockUserRequest.class).flatMap {
+            return Mono.from(ctx.update(DSL.table("fed_user"))
+                    .set(DSL.field('blocked'), it.blocked)
+                    .where(DSL.field('uuid').eq(uuid))
+            ).defaultIfEmpty(0)
+        }.flatMap {
+            return Mono.from(ctx.select().from('fed_user').where(DSL.field('uuid').eq(uuid)))
+        }.map { rec ->
+            return new UserResponse(
+                    rec.get('uuid') as String,
+                    rec.get('firstname') as String,
+                    rec.get('lastname') as String,
+                    rec.get('type') as String,
+                    rec.get('blocked') as boolean
+            )
+        }, UserResponse.class)
+    }
+
+    @Override
+    Mono<ServerResponse> post(ServerRequest request) {
+        String uuid = UUID.randomUUID().toString()
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(request.bodyToMono(UserRequest.class).flatMap {
+            return Mono.from(ctx.insertInto(
+                    DSL.table("fed_user"),
+                    DSL.field('uuid'),
+                    DSL.field('login_hash'),
+                    DSL.field('password_hash'),
+                    DSL.field('firstname'),
+                    DSL.field('lastname'),
+                    DSL.field('blocked'),
+                    DSL.field('type')
+            ).values(
+                    uuid,
+                    AuthUtils.getSHA256(it.login),
+                    AuthUtils.getSHA256(it.password),
+                    it.firstname,
+                    it.lastname,
+                    false,
+                    it.type
+            )).defaultIfEmpty(0)
+        }.flatMap {
+            return Mono.from(ctx.select().from('fed_user').where(DSL.field('uuid').eq(uuid)))
+        }.map { rec ->
+            return new UserResponse(
+                    rec.get('uuid') as String,
+                    rec.get('firstname') as String,
+                    rec.get('lastname') as String,
+                    rec.get('type') as String,
+                    rec.get('blocked') as boolean
+            )
+        }, UserResponse.class)
     }
 }

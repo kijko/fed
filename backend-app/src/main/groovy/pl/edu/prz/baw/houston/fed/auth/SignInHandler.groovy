@@ -30,7 +30,7 @@ class SignInHandler implements RouteHandler {
     }
 
     @Override
-    Mono<ServerResponse> handle(ServerRequest request) {
+    Mono<ServerResponse> post(ServerRequest request) {
         ReactiveSecurityContextHolder.getContext().map { secCtx ->
             LOGGER.info(secCtx)
         }

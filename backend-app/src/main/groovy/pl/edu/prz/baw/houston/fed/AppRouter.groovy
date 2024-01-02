@@ -32,11 +32,19 @@ class AppRouter {
                 .route()
                 .route(
                         POST("$API_BASE_PATH/sign-in").and(accept(MediaType.APPLICATION_JSON)),
-                        signInHandler::handle
+                        signInHandler::post
                 )
                 .route(
                         GET("$API_BASE_PATH/users"),
-                        userManagementHandler::handle
+                        userManagementHandler::get
+                )
+                .route(
+                        POST("$API_BASE_PATH/users"),
+                        userManagementHandler::post
+                )
+                .route(
+                        PATCH("$API_BASE_PATH/users/{id}"),
+                        userManagementHandler::patch
                 )
                 .route(GET("/"), {
                     ServerResponse.ok().contentType(MediaType.TEXT_HTML).bodyValue(indexHtml)
