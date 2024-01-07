@@ -53,6 +53,10 @@ class AppRouter {
                         GET("$API_BASE_PATH/account"),
                         accountHandler::get
                 )
+                .route(
+                        POST("$API_BASE_PATH/account"),
+                        accountHandler::post
+                )
                 .route(GET("/"), {
                     ServerResponse.ok().contentType(MediaType.TEXT_HTML).bodyValue(indexHtml)
                 })
