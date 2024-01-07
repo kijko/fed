@@ -11,6 +11,7 @@ import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.RouterFunctions
 import org.springframework.web.reactive.function.server.ServerResponse
 import pl.edu.prz.baw.houston.fed.auth.SignInHandler
+import pl.edu.prz.baw.houston.fed.money.AccountHandler
 import pl.edu.prz.baw.houston.fed.usermgmt.UserManagementHandler
 
 import static org.springframework.web.reactive.function.server.RequestPredicates.*
@@ -23,6 +24,8 @@ class AppRouter {
     SignInHandler signInHandler
     @Autowired
     UserManagementHandler userManagementHandler
+    @Autowired
+    AccountHandler accountHandler
     @Value("classpath:/assets/index.html")
     Resource indexHtml
 
@@ -45,6 +48,10 @@ class AppRouter {
                 .route(
                         PATCH("$API_BASE_PATH/users/{id}"),
                         userManagementHandler::patch
+                )
+                .route(
+                        GET("$API_BASE_PATH/account"),
+                        accountHandler::get
                 )
                 .route(GET("/"), {
                     ServerResponse.ok().contentType(MediaType.TEXT_HTML).bodyValue(indexHtml)
