@@ -57,35 +57,60 @@ class UserManagementHandler implements RouteHandler {
     @Override
     Mono<ServerResponse> post(ServerRequest request) {
         String uuid = UUID.randomUUID().toString()
-        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(request.bodyToMono(UserRequest.class).flatMap {
-            return Mono.from(ctx.insertInto(
-                    DSL.table("fed_user"),
-                    DSL.field('uuid'),
-                    DSL.field('login_hash'),
-                    DSL.field('password_hash'),
-                    DSL.field('firstname'),
-                    DSL.field('lastname'),
-                    DSL.field('blocked'),
-                    DSL.field('type')
-            ).values(
-                    uuid,
-                    AuthUtils.getSHA256(it.login),
-                    AuthUtils.getSHA256(it.password),
-                    it.firstname,
-                    it.lastname,
-                    false,
-                    it.type
-            )).defaultIfEmpty(0)
-        }.flatMap {
-            return Mono.from(ctx.select().from('fed_user').where(DSL.field('uuid').eq(uuid)))
-        }.map { rec ->
-            return new UserResponse(
-                    rec.get('uuid') as String,
-                    rec.get('firstname') as String,
-                    rec.get('lastname') as String,
-                    rec.get('type') as String,
-                    rec.get('blocked') as boolean
-            )
-        }, UserResponse.class)
+
+        Mono<UserResponse> responseBody = request.bodyToMono(UserRequest.class).flatMap {
+            Mono<UserResponse> res = Mono.from(ctx.transactionPublisher { trx ->
+                return Mono.from(
+                        trx.dsl()
+                                .insertInto(
+                                        DSL.table("fed_user"),
+                                        DSL.field('uuid'),
+                                        DSL.field('login_hash'),
+                                        DSL.field('password_hash'),
+                                        DSL.field('firstname'),
+                                        DSL.field('lastname'),
+                                        DSL.field('blocked'),
+                                        DSL.field('type')
+                                ).values(
+                                uuid,
+                                AuthUtils.getSHA256(it.login),
+                                AuthUtils.getSHA256(it.password),
+                                it.firstname,
+                                it.lastname,
+                                false,
+                                it.type
+                        )
+                ).flatMap { resultInt ->
+                    return Mono.from(trx.dsl()
+                            .insertInto(DSL.table('account'), DSL.field('account_number'), DSL.field('owner_id'), DSL.field('balance'))
+                            .values(getRandom28DigitsAsString(), uuid, new BigDecimal("0.0")))
+                }.flatMap { resultInt ->
+                    return Mono.from(trx.dsl()
+                            .select().from('fed_user').where(DSL.field('uuid').eq(uuid)))
+                }.map { rec ->
+                    return new UserResponse(
+                            rec.get('uuid') as String,
+                            rec.get('firstname') as String,
+                            rec.get('lastname') as String,
+                            rec.get('type') as String,
+                            rec.get('blocked') as boolean
+                    )
+                }
+            })
+
+            return res
+        }
+
+        return ServerResponse.ok().contentType(MediaType.APPLICATION_JSON).body(responseBody, UserResponse.class)
+    }
+
+    private static getRandom28DigitsAsString() {
+        // Create a random instance
+        Random random = new Random()
+
+        // Generate a 28-character long string of random digits
+        String randomDigits = (1..28).collect { random.nextInt(10) }.join()
+
+        return randomDigits
     }
 }
