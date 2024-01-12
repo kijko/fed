@@ -1,6 +1,7 @@
 package pl.edu.prz.baw.houston.fed.money
 
-
+import org.jooq.Record7
+import org.jooq.Record8
 import org.jooq.impl.DefaultDSLContext
 import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
@@ -26,8 +27,62 @@ class TransfersHandler implements RouteHandler {
     Mono<ServerResponse> get(ServerRequest request) {
         MoneyTransferStatus status = MoneyTransferStatus.valueOf(request.queryParam('status').orElseThrow { new RuntimeException('unknown status') })
 
-        Flux<TransferRequestInfo> response = Flux.from(
+        Flux<TransferRequestInfo> response = getTransferRequestsByStatus(status).map {
+            return new TransferRequestInfo(
+                    it.get('req_id'),
+                    "${it.get('from_firstname')} ${it.get('from_lastname')}",
+                    "${it.get('to_firstname')} ${it.get('to_lastname')}",
+                    it.get('amount') as String,
+                    (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
+                    status
+            )
+        }
+
+        return ServerResponse.ok().body(response, TransferRequestInfo.class)
+    }
+
+    @Override
+    Mono<ServerResponse> post(ServerRequest request) {
+        return request.bodyToMono(ChangeTransferStatusRequest.class)
+                .flatMap {
+                    final String transRequestId = request.pathVariable('id')
+                    final MoneyTransferStatus desiredStatus = MoneyTransferStatus.valueOf(it.status)
+
+                    if (!(desiredStatus in [MoneyTransferStatus.APPROVED, MoneyTransferStatus.REJECTED])) {
+                        throw new RuntimeException('status could be only APPROVED || REJECTED')
+                    }
+
+                    // todo add money for recipient account if APPROVED
+                    return Mono.from(
+                            ctx.update(TRANSFER_REQUEST)
+                                .set(TRANSFER_REQUEST.STATUS, desiredStatus.toString())
+                                .where(TRANSFER_REQUEST.ID.eq(transRequestId))
+                    ).flatMap {
+                        if (it == 1) {
+                            Mono<TransferRequestInfo> res = getTransferRequestsById(transRequestId)
+                                    .map {
+                                            return new TransferRequestInfo(
+                                                    it.get('req_id'),
+                                                    "${it.get('from_firstname')} ${it.get('from_lastname')}",
+                                                    "${it.get('to_firstname')} ${it.get('to_lastname')}",
+                                                    it.get('amount') as String,
+                                                    (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
+                                                    MoneyTransferStatus.valueOf(it.get('status'))
+                                            )
+                                    }
+
+                            return ServerResponse.ok().body(res, TransferRequestInfo.class)
+                        }
+
+                        return ServerResponse.notFound().build()
+                    }
+                }
+    }
+
+    private Flux<Record7<?,?,?,?,?,?,?>> getTransferRequestsByStatus(MoneyTransferStatus status) {
+        return Flux.from(
                 ctx.select(
+                        TRANSFER_REQUEST.ID.as('req_id'),
                         FED_USER.as("u1").FIRSTNAME.as('from_firstname'),
                         FED_USER.as("u1").LASTNAME.as('from_lastname'),
                         FED_USER.as("u2").FIRSTNAME.as('to_firstname'),
@@ -44,23 +99,32 @@ class TransfersHandler implements RouteHandler {
                         .on(ACCOUNT.as("ac2").ACCOUNT_NUMBER.eq(TRANSFER_REQUEST.TO_ACCOUNT))
                         .innerJoin(FED_USER.as("u2"))
                         .on(FED_USER.as("u2").UUID.eq(ACCOUNT.as("ac2").OWNER_ID))
-                        .where(TRANSFER_REQUEST.STATUS.eq("PENDING"))
-        ).map {
-            return new TransferRequestInfo(
-                    "${it.get('from_firstname')} ${it.get('from_lastname')}",
-                    "${it.get('to_firstname')} ${it.get('to_lastname')}",
-                    it.get('amount') as String,
-                    (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
-                    status
-            )
-        }
-
-        return ServerResponse.ok().body(response, TransferRequestInfo.class)
+                        .where(TRANSFER_REQUEST.STATUS.eq(status.toString()))
+        )
     }
 
-    @Override
-    Mono<ServerResponse> post(ServerRequest request) {
+    private Mono<Record8<?,?,?,?,?,?,?,?>> getTransferRequestsById(String id) {
+        return Mono.from(
+                ctx.select(
+                        TRANSFER_REQUEST.ID.as('req_id'),
+                        FED_USER.as("u1").FIRSTNAME.as('from_firstname'),
+                        FED_USER.as("u1").LASTNAME.as('from_lastname'),
+                        FED_USER.as("u2").FIRSTNAME.as('to_firstname'),
+                        FED_USER.as("u2").LASTNAME.as('to_lastname'),
+                        TRANSFER_REQUEST.AMOUNT.as('amount'),
+                        TRANSFER_REQUEST.REQUESTED_AT.as('requested_at'),
+                        TRANSFER_REQUEST.STATUS.as('status')
+                )
+                        .from(TRANSFER_REQUEST)
+                        .innerJoin(ACCOUNT.as("ac1"))
+                        .on(ACCOUNT.as("ac1").ACCOUNT_NUMBER.eq(TRANSFER_REQUEST.FROM_ACCOUNT))
+                        .innerJoin(FED_USER.as("u1"))
+                        .on(FED_USER.as("u1").UUID.eq(ACCOUNT.as("ac1").OWNER_ID))
+                        .innerJoin(ACCOUNT.as("ac2"))
+                        .on(ACCOUNT.as("ac2").ACCOUNT_NUMBER.eq(TRANSFER_REQUEST.TO_ACCOUNT))
+                        .innerJoin(FED_USER.as("u2"))
+                        .on(FED_USER.as("u2").UUID.eq(ACCOUNT.as("ac2").OWNER_ID))
+                        .where(TRANSFER_REQUEST.ID.eq(id))
+        )
     }
-
-
 }

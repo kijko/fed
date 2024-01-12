@@ -4,6 +4,7 @@ import java.time.ZonedDateTime
 
 class TransferRequestInfo {
 
+    String id
     String sender
     String recipient
     String amount
@@ -14,7 +15,8 @@ class TransferRequestInfo {
     TransferRequestInfo() {
     }
 
-    TransferRequestInfo(String sender, String recipient, String amount, ZonedDateTime dateTime, MoneyTransferStatus status) {
+    TransferRequestInfo(String id, String sender, String recipient, String amount, ZonedDateTime dateTime, MoneyTransferStatus status) {
+        this.id = id
         this.sender = sender
         this.recipient = recipient
         this.amount = amount

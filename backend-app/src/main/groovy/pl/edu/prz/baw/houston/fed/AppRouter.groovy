@@ -65,7 +65,7 @@ class AppRouter {
                         transfersHandler::get
                 )
                 .route(
-                        POST("$API_BASE_PATH/transfers/{id}"),
+                        POST("$API_BASE_PATH/transfers/{id}").and(accept(MediaType.APPLICATION_JSON)),
                         transfersHandler::post
                 )
                 .route(GET("/"), {
