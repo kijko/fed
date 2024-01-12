@@ -44,6 +44,7 @@ class SecurityConfig {
                         .pathMatchers("${API_BASE_PATH}/sign-in").permitAll()
                         .pathMatchers("${API_BASE_PATH}/users").hasRole('ADMIN')
                         .pathMatchers("${API_BASE_PATH}/account").hasRole('CLIENT')
+                        .pathMatchers("${API_BASE_PATH}/transfers").hasRole('BANK_EMPLOYEE')
                         .anyExchange().authenticated()
             )
             .addFilterAt(jwtAuthFilter, SecurityWebFiltersOrder.AUTHENTICATION)

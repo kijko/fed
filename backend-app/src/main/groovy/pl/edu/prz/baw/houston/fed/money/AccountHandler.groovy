@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component
 import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import pl.edu.prz.baw.houston.fed.RouteHandler
+import pl.edu.prz.baw.houston.fed.Utils
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 
@@ -119,7 +120,7 @@ class AccountHandler implements RouteHandler {
                     (it.get('amount') as BigDecimal).toString(),
                     it.get('from_account') as String,
                     it.get('to_account') as String,
-                    (it.get('requested_at') as java.sql.Timestamp).toInstant().atZone(ZoneId.of("UTC")),
+                    Utils.sqlTimestampToUTCDateTime(it.get('requested_at') as java.sql.Timestamp),
                     MoneyTransferStatus.valueOf(it.get('status') as String)
             )
         }
