@@ -1,5 +1,6 @@
 package pl.edu.prz.baw.houston.fed.money
 
+import org.jooq.DSLContext
 import org.jooq.Record7
 import org.jooq.Record8
 import org.jooq.impl.DSL
@@ -102,65 +103,85 @@ class TransfersHandler implements RouteHandler {
 
                                 return Mono.from(dsl.select(TRANSFER_REQUEST.asterisk()).from(TRANSFER_REQUEST).where(TRANSFER_REQUEST.ID.eq(transRequestId)))
                                     .flatMap { transRequestRecord ->
+                                        MoneyTransferStatus currentStatus = MoneyTransferStatus.valueOf(transRequestRecord.get(TRANSFER_REQUEST.STATUS))
 
-                                        // fail if approved or rejected (maybe not fail, just return obj)
-                                        return Mono.from(dsl.update(TRANSFER_REQUEST).set(TRANSFER_REQUEST.STATUS, desiredStatus.toString()).where(TRANSFER_REQUEST.ID.eq(transRequestId)))
-                                            .flatMap {
-                                                if (desiredStatus == MoneyTransferStatus.APPROVED) {
-                                                    return Mono.from(dsl.select(ACCOUNT.asterisk()).from(ACCOUNT).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('from_account'))))
-                                                            .flatMap { senderAccountRecord ->
-                                                                return Mono.from(dsl.select(ACCOUNT.asterisk()).from(ACCOUNT).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('to_account'))))
-                                                                        .flatMap { recipientAccountRecord ->
+                                        if (currentStatus == MoneyTransferStatus.PENDING) {
+                                            return processPendingTransferRequest(dsl, desiredStatus, transRequestId, transRequestRecord)
+                                        }
 
-                                                                            // UPDATE ACCOUNTS
-                                                                            final BigDecimal amount = transRequestRecord.get('amount') as BigDecimal
-                                                                            final BigDecimal senderBalance = senderAccountRecord.get('balance') as BigDecimal
-                                                                            final BigDecimal recipientBalance = recipientAccountRecord.get('balance') as BigDecimal
-
-                                                                            final BigDecimal senderBalanceAfterTrans = senderBalance.minus(amount)
-                                                                            final BigDecimal recipientBalanceAfterTrans = recipientBalance.plus(amount)
-
-                                                                            return Mono.from(dsl.update(ACCOUNT).set(ACCOUNT.BALANCE, senderBalanceAfterTrans).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('from_account'))))
-                                                                                    .flatMap {
-                                                                                        return Mono.from(dsl.update(ACCOUNT).set(ACCOUNT.BALANCE, recipientBalanceAfterTrans).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('to_account'))))
-                                                                                            .flatMap {
-                                                                                                Mono<TransferRequestInfo> res = getTransferRequestsById(transRequestId)
-                                                                                                        .map {
-                                                                                                            return new TransferRequestInfo(
-                                                                                                                    it.get('req_id'),
-                                                                                                                    "${it.get('from_firstname')} ${it.get('from_lastname')}",
-                                                                                                                    "${it.get('to_firstname')} ${it.get('to_lastname')}",
-                                                                                                                    it.get('amount') as String,
-                                                                                                                    (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
-                                                                                                                    MoneyTransferStatus.valueOf(it.get('status'))
-                                                                                                            )
-                                                                                                        }
-
-                                                                                                return ServerResponse.ok().body(res, TransferRequestInfo.class)
-                                                                                            }
-                                                                                    }
-                                                                        }
-                                                            }
+                                        Mono<TransferRequestInfo> res = getTransferRequestsById(transRequestId)
+                                                .map {
+                                                    return new TransferRequestInfo(
+                                                            it.get('req_id'),
+                                                            "${it.get('from_firstname')} ${it.get('from_lastname')}",
+                                                            "${it.get('to_firstname')} ${it.get('to_lastname')}",
+                                                            it.get('amount') as String,
+                                                            (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
+                                                            MoneyTransferStatus.valueOf(it.get('status'))
+                                                    )
                                                 }
 
-                                                Mono<TransferRequestInfo> res = getTransferRequestsById(transRequestId)
-                                                        .map {
-                                                            return new TransferRequestInfo(
-                                                                    it.get('req_id'),
-                                                                    "${it.get('from_firstname')} ${it.get('from_lastname')}",
-                                                                    "${it.get('to_firstname')} ${it.get('to_lastname')}",
-                                                                    it.get('amount') as String,
-                                                                    (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
-                                                                    MoneyTransferStatus.valueOf(it.get('status'))
-                                                            )
-                                                        }
-
-                                                return ServerResponse.ok().body(res, TransferRequestInfo.class)
-                                            }
+                                        return ServerResponse.ok().body(res, TransferRequestInfo.class)
                                     }
                                 // END TRANSACTION
                             }
                     )
+                }
+    }
+
+    private Mono<ServerResponse> processPendingTransferRequest(DSLContext dsl, MoneyTransferStatus desiredStatus, String transRequestId, transRequestRecord) {
+        return Mono.from(dsl.update(TRANSFER_REQUEST).set(TRANSFER_REQUEST.STATUS, desiredStatus.toString()).where(TRANSFER_REQUEST.ID.eq(transRequestId)))
+                .flatMap {
+                    if (desiredStatus == MoneyTransferStatus.APPROVED) {
+                        return Mono.from(dsl.select(ACCOUNT.asterisk()).from(ACCOUNT).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('from_account'))))
+                                .flatMap { senderAccountRecord ->
+                                    return Mono.from(dsl.select(ACCOUNT.asterisk()).from(ACCOUNT).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('to_account'))))
+                                            .flatMap { recipientAccountRecord ->
+
+                                                // UPDATE ACCOUNTS
+                                                final BigDecimal amount = transRequestRecord.get('amount') as BigDecimal
+                                                final BigDecimal senderBalance = senderAccountRecord.get('balance') as BigDecimal
+                                                final BigDecimal recipientBalance = recipientAccountRecord.get('balance') as BigDecimal
+
+                                                final BigDecimal senderBalanceAfterTrans = senderBalance.minus(amount)
+                                                final BigDecimal recipientBalanceAfterTrans = recipientBalance.plus(amount)
+
+                                                return Mono.from(dsl.update(ACCOUNT).set(ACCOUNT.BALANCE, senderBalanceAfterTrans).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('from_account'))))
+                                                        .flatMap {
+                                                            return Mono.from(dsl.update(ACCOUNT).set(ACCOUNT.BALANCE, recipientBalanceAfterTrans).where(ACCOUNT.ACCOUNT_NUMBER.eq(transRequestRecord.get('to_account'))))
+                                                                    .flatMap {
+                                                                        Mono<TransferRequestInfo> res = getTransferRequestsById(transRequestId)
+                                                                                .map {
+                                                                                    return new TransferRequestInfo(
+                                                                                            it.get('req_id'),
+                                                                                            "${it.get('from_firstname')} ${it.get('from_lastname')}",
+                                                                                            "${it.get('to_firstname')} ${it.get('to_lastname')}",
+                                                                                            it.get('amount') as String,
+                                                                                            (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
+                                                                                            MoneyTransferStatus.valueOf(it.get('status'))
+                                                                                    )
+                                                                                }
+
+                                                                        return ServerResponse.ok().body(res, TransferRequestInfo.class)
+                                                                    }
+                                                        }
+                                            }
+                                }
+                    }
+
+                    Mono<TransferRequestInfo> res = getTransferRequestsById(transRequestId)
+                            .map {
+                                return new TransferRequestInfo(
+                                        it.get('req_id'),
+                                        "${it.get('from_firstname')} ${it.get('from_lastname')}",
+                                        "${it.get('to_firstname')} ${it.get('to_lastname')}",
+                                        it.get('amount') as String,
+                                        (it.get('requested_at') as LocalDateTime).atZone(ZoneId.of('UTC')),
+                                        MoneyTransferStatus.valueOf(it.get('status'))
+                                )
+                            }
+
+                    return ServerResponse.ok().body(res, TransferRequestInfo.class)
                 }
     }
 
