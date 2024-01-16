@@ -1,8 +1,20 @@
+buildscript {
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath group: 'org.jooq', name: 'jooq', version: '3.18.7'
+		classpath group: 'org.jooq', name: 'jooq-meta', version: '3.18.7'
+		classpath group: 'org.jooq', name: 'jooq-codegen', version: '3.18.7'
+		classpath group: 'org.postgresql', name: 'postgresql', version: '42.7.1'
+	}
+}
+
 plugins {
 	id 'groovy'
 	id 'org.springframework.boot' version '3.2.1'
 	id 'io.spring.dependency-management' version '1.1.4'
-//	id "org.jooq.jooq-codegen-gradle" version "3.19.1"
 }
 
 group = 'pl.edu.prz.baw.houston'
@@ -39,4 +51,30 @@ dependencies {
 
 tasks.named('test') {
 	useJUnitPlatform()
+}
+
+tasks.register('genDbClasses') {
+	doLast {
+		def conf = new org.jooq.meta.jaxb.Configuration()
+				.withJdbc(new org.jooq.meta.jaxb.Jdbc()
+						.withDriver("org.postgresql.Driver")
+						.withUrl("jdbc:postgresql://localhost:5432/fed")
+						.withUser("postgres")
+						.withPassword("postgres")
+				)
+				.withGenerator(new org.jooq.meta.jaxb.Generator()
+						.withDatabase(new org.jooq.meta.jaxb.Database()
+								.withName("org.jooq.meta.postgres.PostgresDatabase")
+								.withIncludes(".*")
+								.withInputSchema("public")
+						)
+						.withGenerate()
+						.withTarget(new org.jooq.meta.jaxb.Target()
+								.withPackageName("pl.edu.prz.baw.houston.fed.db")
+								.withDirectory("${project.rootDir}/src/main/java")
+						)
+				)
+
+		org.jooq.codegen.GenerationTool.generate(conf)
+	}
 }

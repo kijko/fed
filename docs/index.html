@@ -689,6 +689,21 @@
   <script>
     // Script section to load models into a JS Var
     var defs = {}
+            defs["account_body"] = {
+  "type" : "object",
+  "properties" : {
+    "toAccountNumber" : {
+      "type" : "string",
+      "description" : "Numer konta odbiorcy",
+      "example" : "1234567890123456789012345678"
+    },
+    "amount" : {
+      "type" : "string",
+      "description" : "Kwota przelewu jako string",
+      "example" : "2.000"
+    }
+  }
+};
             defs["inline_response_200"] = {
   "type" : "object",
   "properties" : {
@@ -794,6 +809,175 @@
     }
   }
 };
+            defs["inline_response_200_4"] = {
+  "type" : "object",
+  "properties" : {
+    "accountNumber" : {
+      "type" : "string",
+      "description" : "28-liczbowy number konta (bez spacji)",
+      "example" : "1.2345678901234569E+27"
+    },
+    "login" : {
+      "type" : "string",
+      "description" : "Login użytkownika",
+      "example" : "andrew23"
+    },
+    "firstName" : {
+      "type" : "string",
+      "description" : "Pierwsze imie",
+      "example" : "Jerzy"
+    },
+    "lastName" : {
+      "type" : "string",
+      "description" : "NAzwisko",
+      "example" : "Brzeczyszczykiweicz"
+    },
+    "balance" : {
+      "type" : "string",
+      "description" : "stan konta jako string",
+      "example" : "1.234"
+    },
+    "outboundTransfers" : {
+      "type" : "array",
+      "description" : "Przelewy wychodzące",
+      "items" : {
+        "properties" : {
+          "amount" : {
+            "type" : "string",
+            "description" : "Kwota przelewu jako string",
+            "example" : "5200.532"
+          },
+          "fromAccountNumber" : {
+            "type" : "string",
+            "description" : "Numer konta wysyłającego",
+            "example" : "1234567890123456789012345678"
+          },
+          "toAccountNumber" : {
+            "type" : "string",
+            "description" : "Numer konta otrzymujacego",
+            "example" : "0987654321098765432112345678"
+          },
+          "requestedAt" : {
+            "type" : "string",
+            "description" : "Data zlecenia przelewu (strefa czasowa UTC!)",
+            "format" : "date-time",
+            "example" : "2024-01-07T18:47:23.145305Z"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Stan przelewu. Mozliwe wartosci: APPROVED, REJECTED, PENDING",
+            "example" : "REJECTED"
+          }
+        }
+      }
+    },
+    "inboundTransfer" : {
+      "type" : "array",
+      "description" : "Przelewy przychodzące",
+      "items" : {
+        "properties" : {
+          "amount" : {
+            "type" : "string",
+            "description" : "Kwota przelewu jako string",
+            "example" : "5200.532"
+          },
+          "fromAccountNumber" : {
+            "type" : "string",
+            "description" : "Numer konta wysyłającego",
+            "example" : "1234567890123456789012345678"
+          },
+          "toAccountNumber" : {
+            "type" : "string",
+            "description" : "Numer konta otrzymujacego",
+            "example" : "0987654321098765432112345678"
+          },
+          "requestedAt" : {
+            "type" : "string",
+            "description" : "Data zlecenia przelewu (strefa czasowa UTC!)",
+            "format" : "date-time",
+            "example" : "2024-01-07T18:47:23.145305Z"
+          },
+          "status" : {
+            "type" : "string",
+            "description" : "Stan przelewu. Mozliwe wartosci: APPROVED, REJECTED, PENDING",
+            "example" : "APPROVED"
+          }
+        }
+      }
+    }
+  }
+};
+            defs["inline_response_200_5"] = {
+  "properties" : {
+    "id" : {
+      "type" : "string",
+      "description" : "identyfikator przelewu w formacie UUID",
+      "example" : "3b514962-8a34-4cd4-ba61-2eb8a2c3b307"
+    },
+    "sender" : {
+      "type" : "string",
+      "description" : "Imie i nazwisko wysylajacego",
+      "example" : "Andrew Leppur"
+    },
+    "recipient" : {
+      "type" : "string",
+      "description" : "Imie i nazwisko otrzymujacego",
+      "example" : "Jerzy Zwierzy"
+    },
+    "amount" : {
+      "type" : "string",
+      "description" : "Kwota przelewu",
+      "example" : "55.223"
+    },
+    "dateTime" : {
+      "type" : "string",
+      "description" : "Data i czas zelecenia przelewu (UTC!)",
+      "format" : "date-time",
+      "example" : "2024-01-07T19:47:23.145305Z"
+    },
+    "status" : {
+      "type" : "string",
+      "description" : "Status przelewu. Mozliwe wartosci: APPROVED, REJECTED, PENDING",
+      "example" : "APPROVED"
+    }
+  }
+};
+            defs["inline_response_200_6"] = {
+  "type" : "object",
+  "properties" : {
+    "id" : {
+      "type" : "string",
+      "description" : "identyfikator przelewu w formacie UUID",
+      "example" : "3b514962-8a34-4cd4-ba61-2eb8a2c3b307"
+    },
+    "sender" : {
+      "type" : "string",
+      "description" : "Imie i nazwisko wysylajacego",
+      "example" : "Andrew Leppur"
+    },
+    "recipient" : {
+      "type" : "string",
+      "description" : "Imie i nazwisko otrzymujacego",
+      "example" : "Jerzy Zwierzy"
+    },
+    "amount" : {
+      "type" : "string",
+      "description" : "Kwota przelewu",
+      "example" : "55.223"
+    },
+    "dateTime" : {
+      "type" : "string",
+      "description" : "Data i czas zelecenia przelewu (UTC!)",
+      "format" : "date-time",
+      "example" : "2024-01-07T19:47:23.145305Z"
+    },
+    "status" : {
+      "type" : "string",
+      "description" : "Status przelewu. Mozliwe wartosci: APPROVED, REJECTED, PENDING",
+      "example" : "APPROVED"
+    }
+  }
+};
             defs["signin_body"] = {
   "type" : "object",
   "properties" : {
@@ -804,6 +988,16 @@
     "password" : {
       "type" : "string",
       "example" : "123456"
+    }
+  }
+};
+            defs["transfers_transferId_body"] = {
+  "type" : "object",
+  "properties" : {
+    "status" : {
+      "type" : "string",
+      "description" : "status - jedna z dwoch wartosci APPROVED gdy zaakceptowany, REJECTED gdy odrzucony",
+      "example" : "REJECTED"
     }
   }
 };
@@ -862,9 +1056,23 @@
             -->
             <li class="nav-fixed nav-header active" data-group="_"><a href="#api-_">API Summary</a></li>
 
+                  <li class="nav-header" data-group="KsiegowaniePrzelewow"><a href="#api-KsiegowaniePrzelewow">API Methods - KsiegowaniePrzelewow</a></li>
+                    <li data-group="KsiegowaniePrzelewow" data-name="getTransfers" class="">
+                      <a href="#api-KsiegowaniePrzelewow-getTransfers">getTransfers</a>
+                    </li>
+                    <li data-group="KsiegowaniePrzelewow" data-name="performTransfer" class="">
+                      <a href="#api-KsiegowaniePrzelewow-performTransfer">performTransfer</a>
+                    </li>
                   <li class="nav-header" data-group="Uwierzytelnianie"><a href="#api-Uwierzytelnianie">API Methods - Uwierzytelnianie</a></li>
                     <li data-group="Uwierzytelnianie" data-name="signIn" class="">
                       <a href="#api-Uwierzytelnianie-signIn">signIn</a>
+                    </li>
+                  <li class="nav-header" data-group="ZarzadzanieKontem"><a href="#api-ZarzadzanieKontem">API Methods - ZarzadzanieKontem</a></li>
+                    <li data-group="ZarzadzanieKontem" data-name="getAccount" class="">
+                      <a href="#api-ZarzadzanieKontem-getAccount">getAccount</a>
+                    </li>
+                    <li data-group="ZarzadzanieKontem" data-name="sendMoney" class="">
+                      <a href="#api-ZarzadzanieKontem-sendMoney">sendMoney</a>
                     </li>
                   <li class="nav-header" data-group="ZarzdzanieUytkownikami"><a href="#api-ZarzdzanieUytkownikami">API Methods - ZarzdzanieUytkownikami</a></li>
                     <li data-group="ZarzdzanieUytkownikami" data-name="addUser" class="">
@@ -895,6 +1103,735 @@
           </div>
         </div>
         <div id="sections">
+                <section id="api-KsiegowaniePrzelewow">
+                  <h1>KsiegowaniePrzelewow</h1>
+                    <div id="api-KsiegowaniePrzelewow-getTransfers">
+                      <article id="api-KsiegowaniePrzelewow-getTransfers-0" data-group="User" data-name="getTransfers" data-version="0">
+                        <div class="pull-left">
+                          <h1>getTransfers</h1>
+                          <p>[PRACOWNIK BANKU ONLY] Pobierz liste wszystkich przelewow: do akceptacji, zaakceptowane, odrzucone - w zaleznosci od parametru status</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/transfers</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-java">Java</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-getTransfers-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-KsiegowaniePrzelewow-getTransfers-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://fed-app.azurewebsites.net/api/transfers?status="</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.KsiegowaniePrzelewowApi;
+
+import java.io.File;
+import java.util.*;
+
+public class KsiegowaniePrzelewowApiExample {
+
+    public static void main(String[] args) {
+        
+        KsiegowaniePrzelewowApi apiInstance = new KsiegowaniePrzelewowApi();
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        String status = status_example; // String | Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+        try {
+            array[inline_response_200_5] result = apiInstance.getTransfers(authorization, status);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling KsiegowaniePrzelewowApi#getTransfers");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.KsiegowaniePrzelewowApi;
+
+public class KsiegowaniePrzelewowApiExample {
+
+    public static void main(String[] args) {
+        KsiegowaniePrzelewowApi apiInstance = new KsiegowaniePrzelewowApi();
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        String status = status_example; // String | Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+        try {
+            array[inline_response_200_5] result = apiInstance.getTransfers(authorization, status);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling KsiegowaniePrzelewowApi#getTransfers");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *authorization = authorization_example; // Token sesji w formacie "Bearer {TOKEN}"
+String *status = status_example; // Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+
+KsiegowaniePrzelewowApi *apiInstance = [[KsiegowaniePrzelewowApi alloc] init];
+
+// [PRACOWNIK BANKU ONLY] Pobierz liste wszystkich przelewow: do akceptacji, zaakceptowane, odrzucone - w zaleznosci od parametru status
+[apiInstance getTransfersWith:authorization
+    status:status
+              completionHandler: ^(array[inline_response_200_5] output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SystemRezerwyFederalnejOpenApi30 = require('system_rezerwy_federalnej___open_api_30');
+
+var api = new SystemRezerwyFederalnejOpenApi30.KsiegowaniePrzelewowApi()
+var authorization = authorization_example; // {{String}} Token sesji w formacie "Bearer {TOKEN}"
+var status = status_example; // {{String}} Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getTransfers(authorization, status, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getTransfersExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new KsiegowaniePrzelewowApi();
+            var authorization = authorization_example;  // String | Token sesji w formacie "Bearer {TOKEN}"
+            var status = status_example;  // String | Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+
+            try
+            {
+                // [PRACOWNIK BANKU ONLY] Pobierz liste wszystkich przelewow: do akceptacji, zaakceptowane, odrzucone - w zaleznosci od parametru status
+                array[inline_response_200_5] result = apiInstance.getTransfers(authorization, status);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling KsiegowaniePrzelewowApi.getTransfers: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiKsiegowaniePrzelewowApi();
+$authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+$status = status_example; // String | Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+
+try {
+    $result = $api_instance->getTransfers($authorization, $status);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling KsiegowaniePrzelewowApi->getTransfers: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::KsiegowaniePrzelewowApi;
+
+my $api_instance = WWW::SwaggerClient::KsiegowaniePrzelewowApi->new();
+my $authorization = authorization_example; # String | Token sesji w formacie "Bearer {TOKEN}"
+my $status = status_example; # String | Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+
+eval { 
+    my $result = $api_instance->getTransfers(authorization => $authorization, status => $status);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling KsiegowaniePrzelewowApi->getTransfers: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-getTransfers-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.KsiegowaniePrzelewowApi()
+authorization = authorization_example # String | Token sesji w formacie "Bearer {TOKEN}"
+status = status_example # String | Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+
+try: 
+    # [PRACOWNIK BANKU ONLY] Pobierz liste wszystkich przelewow: do akceptacji, zaakceptowane, odrzucone - w zaleznosci od parametru status
+    api_response = api_instance.get_transfers(authorization, status)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling KsiegowaniePrzelewowApi->getTransfers: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">Authorization*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_getTransfers_authorization">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          Token sesji w formacie &quot;Bearer {TOKEN}&quot;
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+                            <div class="methodsubtabletitle">Query parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">status*</td>
+                                <td>
+                                
+                                
+                                    <div id="d2e199_getTransfers_status">
+                                        <div class="json-schema-view">
+                                            <div class="primitive">
+                                                <span class="type">
+                                                    String
+                                                </span>
+                                
+                                                    <div class="inner description">
+                                                        Filtruj po statusie. Mozliwe wartosci: APPROVED, REJECTED, PENDING
+                                                    </div>
+                                            </div>
+                                                <div class="inner required">
+                                                    Required
+                                                </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                </tr>
+                            </table>
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - lista przelewow </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getTransfers-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getTransfers-200-schema">
+                                  <div id='responses-getTransfers-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "lista przelewow",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "type" : "array",
+        "items" : {
+          "$ref" : "#/components/schemas/inline_response_200_5"
+        },
+        "x-content-type" : "application/json"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getTransfers-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getTransfers-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getTransfers-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-KsiegowaniePrzelewow-performTransfer">
+                      <article id="api-KsiegowaniePrzelewow-performTransfer-0" data-group="User" data-name="performTransfer" data-version="0">
+                        <div class="pull-left">
+                          <h1>performTransfer</h1>
+                          <p>[PRACOWNIK BANKU ONLY] Zaakceptuj badz odrzuć przelew</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/transfers/{transferId}</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-java">Java</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-KsiegowaniePrzelewow-performTransfer-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-KsiegowaniePrzelewow-performTransfer-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Accept: application/json"\
+-H "Content-Type: application/json"\
+"https://fed-app.azurewebsites.net/api/transfers/{transferId}"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.KsiegowaniePrzelewowApi;
+
+import java.io.File;
+import java.util.*;
+
+public class KsiegowaniePrzelewowApiExample {
+
+    public static void main(String[] args) {
+        
+        KsiegowaniePrzelewowApi apiInstance = new KsiegowaniePrzelewowApi();
+        Transfers_transferId_body body = ; // Transfers_transferId_body | Status przelewu
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        String transferId = transferId_example; // String | ID przelewu
+        try {
+            inline_response_200_6 result = apiInstance.performTransfer(body, authorization, transferId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling KsiegowaniePrzelewowApi#performTransfer");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.KsiegowaniePrzelewowApi;
+
+public class KsiegowaniePrzelewowApiExample {
+
+    public static void main(String[] args) {
+        KsiegowaniePrzelewowApi apiInstance = new KsiegowaniePrzelewowApi();
+        Transfers_transferId_body body = ; // Transfers_transferId_body | Status przelewu
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        String transferId = transferId_example; // String | ID przelewu
+        try {
+            inline_response_200_6 result = apiInstance.performTransfer(body, authorization, transferId);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling KsiegowaniePrzelewowApi#performTransfer");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Transfers_transferId_body *body = ; // Status przelewu
+String *authorization = authorization_example; // Token sesji w formacie "Bearer {TOKEN}"
+String *transferId = transferId_example; // ID przelewu
+
+KsiegowaniePrzelewowApi *apiInstance = [[KsiegowaniePrzelewowApi alloc] init];
+
+// [PRACOWNIK BANKU ONLY] Zaakceptuj badz odrzuć przelew
+[apiInstance performTransferWith:body
+    authorization:authorization
+    transferId:transferId
+              completionHandler: ^(inline_response_200_6 output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SystemRezerwyFederalnejOpenApi30 = require('system_rezerwy_federalnej___open_api_30');
+
+var api = new SystemRezerwyFederalnejOpenApi30.KsiegowaniePrzelewowApi()
+var body = ; // {{Transfers_transferId_body}} Status przelewu
+var authorization = authorization_example; // {{String}} Token sesji w formacie "Bearer {TOKEN}"
+var transferId = transferId_example; // {{String}} ID przelewu
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.performTransfer(bodyauthorizationtransferId, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class performTransferExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new KsiegowaniePrzelewowApi();
+            var body = new Transfers_transferId_body(); // Transfers_transferId_body | Status przelewu
+            var authorization = authorization_example;  // String | Token sesji w formacie "Bearer {TOKEN}"
+            var transferId = transferId_example;  // String | ID przelewu
+
+            try
+            {
+                // [PRACOWNIK BANKU ONLY] Zaakceptuj badz odrzuć przelew
+                inline_response_200_6 result = apiInstance.performTransfer(body, authorization, transferId);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling KsiegowaniePrzelewowApi.performTransfer: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiKsiegowaniePrzelewowApi();
+$body = ; // Transfers_transferId_body | Status przelewu
+$authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+$transferId = transferId_example; // String | ID przelewu
+
+try {
+    $result = $api_instance->performTransfer($body, $authorization, $transferId);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling KsiegowaniePrzelewowApi->performTransfer: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::KsiegowaniePrzelewowApi;
+
+my $api_instance = WWW::SwaggerClient::KsiegowaniePrzelewowApi->new();
+my $body = WWW::SwaggerClient::Object::Transfers_transferId_body->new(); # Transfers_transferId_body | Status przelewu
+my $authorization = authorization_example; # String | Token sesji w formacie "Bearer {TOKEN}"
+my $transferId = transferId_example; # String | ID przelewu
+
+eval { 
+    my $result = $api_instance->performTransfer(body => $body, authorization => $authorization, transferId => $transferId);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling KsiegowaniePrzelewowApi->performTransfer: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-KsiegowaniePrzelewow-performTransfer-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.KsiegowaniePrzelewowApi()
+body =  # Transfers_transferId_body | Status przelewu
+authorization = authorization_example # String | Token sesji w formacie "Bearer {TOKEN}"
+transferId = transferId_example # String | ID przelewu
+
+try: 
+    # [PRACOWNIK BANKU ONLY] Zaakceptuj badz odrzuć przelew
+    api_response = api_instance.perform_transfer(body, authorization, transferId)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling KsiegowaniePrzelewowApi->performTransfer: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+                            <div class="methodsubtabletitle">Path parameters</div>
+                            <table id="methodsubtable">
+                                <tr>
+                                  <th width="150px">Name</th>
+                                  <th>Description</th>
+                                </tr>
+                                  <tr><td style="width:150px;">transferId*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_performTransfer_transferId">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          ID przelewu
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">Authorization*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_performTransfer_authorization">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          Token sesji w formacie &quot;Bearer {TOKEN}&quot;
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "description" : "Status przelewu",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/transfers_transferId_body"
+      }
+    }
+  },
+  "required" : true
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_performTransfer_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_performTransfer_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Zwraca liste przelewow do zaakceptowania </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-performTransfer-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-performTransfer-200-schema">
+                                  <div id='responses-performTransfer-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Zwraca liste przelewow do zaakceptowania",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_200_6"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-performTransfer-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-performTransfer-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-performTransfer-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
                 <section id="api-Uwierzytelnianie">
                   <h1>Uwierzytelnianie</h1>
                     <div id="api-Uwierzytelnianie-signIn">
@@ -1203,6 +2140,621 @@ except ApiException as e:
                                   </div>
                                   <input id='responses-signIn-200-schema-data' type='hidden' value=''></input>
                                 </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                  </section>
+                <section id="api-ZarzadzanieKontem">
+                  <h1>ZarzadzanieKontem</h1>
+                    <div id="api-ZarzadzanieKontem-getAccount">
+                      <article id="api-ZarzadzanieKontem-getAccount-0" data-group="User" data-name="getAccount" data-version="0">
+                        <div class="pull-left">
+                          <h1>getAccount</h1>
+                          <p>[CLIENT ONLY] Pobierz dane konta zalogowanego użytkownika</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="get"><code><span class="pln">/account</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ZarzadzanieKontem-getAccount-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-getAccount-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ZarzadzanieKontem-getAccount-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X GET\
+-H "Accept: application/json"\
+"https://fed-app.azurewebsites.net/api/account"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.ZarzadzanieKontemApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ZarzadzanieKontemApiExample {
+
+    public static void main(String[] args) {
+        
+        ZarzadzanieKontemApi apiInstance = new ZarzadzanieKontemApi();
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        try {
+            inline_response_200_4 result = apiInstance.getAccount(authorization);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ZarzadzanieKontemApi#getAccount");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.ZarzadzanieKontemApi;
+
+public class ZarzadzanieKontemApiExample {
+
+    public static void main(String[] args) {
+        ZarzadzanieKontemApi apiInstance = new ZarzadzanieKontemApi();
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        try {
+            inline_response_200_4 result = apiInstance.getAccount(authorization);
+            System.out.println(result);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ZarzadzanieKontemApi#getAccount");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">String *authorization = authorization_example; // Token sesji w formacie "Bearer {TOKEN}"
+
+ZarzadzanieKontemApi *apiInstance = [[ZarzadzanieKontemApi alloc] init];
+
+// [CLIENT ONLY] Pobierz dane konta zalogowanego użytkownika
+[apiInstance getAccountWith:authorization
+              completionHandler: ^(inline_response_200_4 output, NSError* error) {
+                            if (output) {
+                                NSLog(@"%@", output);
+                            }
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SystemRezerwyFederalnejOpenApi30 = require('system_rezerwy_federalnej___open_api_30');
+
+var api = new SystemRezerwyFederalnejOpenApi30.ZarzadzanieKontemApi()
+var authorization = authorization_example; // {{String}} Token sesji w formacie "Bearer {TOKEN}"
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully. Returned data: ' + data);
+  }
+};
+api.getAccount(authorization, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class getAccountExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new ZarzadzanieKontemApi();
+            var authorization = authorization_example;  // String | Token sesji w formacie "Bearer {TOKEN}"
+
+            try
+            {
+                // [CLIENT ONLY] Pobierz dane konta zalogowanego użytkownika
+                inline_response_200_4 result = apiInstance.getAccount(authorization);
+                Debug.WriteLine(result);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling ZarzadzanieKontemApi.getAccount: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiZarzadzanieKontemApi();
+$authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+
+try {
+    $result = $api_instance->getAccount($authorization);
+    print_r($result);
+} catch (Exception $e) {
+    echo 'Exception when calling ZarzadzanieKontemApi->getAccount: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::ZarzadzanieKontemApi;
+
+my $api_instance = WWW::SwaggerClient::ZarzadzanieKontemApi->new();
+my $authorization = authorization_example; # String | Token sesji w formacie "Bearer {TOKEN}"
+
+eval { 
+    my $result = $api_instance->getAccount(authorization => $authorization);
+    print Dumper($result);
+};
+if ($@) {
+    warn "Exception when calling ZarzadzanieKontemApi->getAccount: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-getAccount-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.ZarzadzanieKontemApi()
+authorization = authorization_example # String | Token sesji w formacie "Bearer {TOKEN}"
+
+try: 
+    # [CLIENT ONLY] Pobierz dane konta zalogowanego użytkownika
+    api_response = api_instance.get_account(authorization)
+    pprint(api_response)
+except ApiException as e:
+    print("Exception when calling ZarzadzanieKontemApi->getAccount: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">Authorization*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_getAccount_authorization">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          Token sesji w formacie &quot;Bearer {TOKEN}&quot;
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Zwraca obiekt konta klienta </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                                <li class="active">
+                                  <a data-toggle="tab" href="#responses-getAccount-200-schema">Schema</a>
+                                </li>
+
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                                <div class="tab-pane active" id="responses-getAccount-200-schema">
+                                  <div id='responses-getAccount-200-schema-200' style="padding: 30px; border-left: 1px solid #eee; border-right: 1px solid #eee; border-bottom: 1px solid #eee;">
+                                    <script>
+                                      $(document).ready(function() {
+                                        var schemaWrapper = {
+  "description" : "Zwraca obiekt konta klienta",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/inline_response_200_4"
+      }
+    }
+  }
+};
+                                        var schema = schemaWrapper.content["application/json"].schema;
+                                        if (schema.$ref != null) {
+                                          schema = defsParser.$refs.get(schema.$ref);
+                                        } else {
+                                          schemaWrapper.components = {};
+                                          schemaWrapper.components.schemas = Object.assign({}, defs);
+                                          $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                            console.log(err);
+                                          });
+                                        }
+
+                                        //console.log(JSON.stringify(schema));
+                                        var view = new JSONSchemaView(schema, 3);
+                                        $('#responses-getAccount-200-schema-data').val(stringify(schema));
+                                        var result = $('#responses-getAccount-200-schema-200');
+                                        result.empty();
+                                        result.append(view.render());
+                                      });
+                                    </script>
+                                  </div>
+                                  <input id='responses-getAccount-200-schema-data' type='hidden' value=''></input>
+                                </div>
+                            </div>
+
+                        </article>
+                      </div>
+                      <hr>
+                    <div id="api-ZarzadzanieKontem-sendMoney">
+                      <article id="api-ZarzadzanieKontem-sendMoney-0" data-group="User" data-name="sendMoney" data-version="0">
+                        <div class="pull-left">
+                          <h1>sendMoney</h1>
+                          <p>[CLIENT ONLY] Przelej kase</p>
+                        </div>
+                        <div class="pull-right"></div>
+                        <div class="clearfix"></div>
+                        <p></p>
+                        <p class="marked"></p>
+                        <p></p>
+                        <br />
+                        <pre class="prettyprint language-html prettyprinted" data-type="post"><code><span class="pln">/account</span></code></pre>
+                        <p>
+                          <h3>Usage and SDK Samples</h3>
+                        </p>
+                        <ul class="nav nav-tabs nav-tabs-examples">
+                          <li class="active"><a href="#examples-ZarzadzanieKontem-sendMoney-0-curl">Curl</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-java">Java</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-android">Android</a></li>
+                          <!--<li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-groovy">Groovy</a></li>-->
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-objc">Obj-C</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-javascript">JavaScript</a></li>
+                          <!--<li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-angular">Angular</a></li>-->
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-csharp">C#</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-php">PHP</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-perl">Perl</a></li>
+                          <li class=""><a href="#examples-ZarzadzanieKontem-sendMoney-0-python">Python</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                          <div class="tab-pane active" id="examples-ZarzadzanieKontem-sendMoney-0-curl">
+                           <pre class="prettyprint"><code class="language-bsh">curl -X POST\
+-H "Content-Type: application/json"\
+"https://fed-app.azurewebsites.net/api/account"</code></pre>
+                          </div>
+                          <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-java">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.*;
+import io.swagger.client.auth.*;
+import io.swagger.client.model.*;
+import io.swagger.client.api.ZarzadzanieKontemApi;
+
+import java.io.File;
+import java.util.*;
+
+public class ZarzadzanieKontemApiExample {
+
+    public static void main(String[] args) {
+        
+        ZarzadzanieKontemApi apiInstance = new ZarzadzanieKontemApi();
+        Account_body body = ; // Account_body | Dane przelewu
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        try {
+            apiInstance.sendMoney(body, authorization);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ZarzadzanieKontemApi#sendMoney");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+
+                          <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-android">
+                            <pre class="prettyprint"><code class="language-java">import io.swagger.client.api.ZarzadzanieKontemApi;
+
+public class ZarzadzanieKontemApiExample {
+
+    public static void main(String[] args) {
+        ZarzadzanieKontemApi apiInstance = new ZarzadzanieKontemApi();
+        Account_body body = ; // Account_body | Dane przelewu
+        String authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+        try {
+            apiInstance.sendMoney(body, authorization);
+        } catch (ApiException e) {
+            System.err.println("Exception when calling ZarzadzanieKontemApi#sendMoney");
+            e.printStackTrace();
+        }
+    }
+}</code></pre>
+                          </div>
+  <!--
+  <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-groovy">
+  <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+  </div> -->
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-objc">
+                              <pre class="prettyprint"><code class="language-cpp">Account_body *body = ; // Dane przelewu
+String *authorization = authorization_example; // Token sesji w formacie "Bearer {TOKEN}"
+
+ZarzadzanieKontemApi *apiInstance = [[ZarzadzanieKontemApi alloc] init];
+
+// [CLIENT ONLY] Przelej kase
+[apiInstance sendMoneyWith:body
+    authorization:authorization
+              completionHandler: ^(NSError* error) {
+                            if (error) {
+                                NSLog(@"Error: %@", error);
+                            }
+                        }];
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-javascript">
+                              <pre class="prettyprint"><code class="language-js">var SystemRezerwyFederalnejOpenApi30 = require('system_rezerwy_federalnej___open_api_30');
+
+var api = new SystemRezerwyFederalnejOpenApi30.ZarzadzanieKontemApi()
+var body = ; // {{Account_body}} Dane przelewu
+var authorization = authorization_example; // {{String}} Token sesji w formacie "Bearer {TOKEN}"
+
+var callback = function(error, data, response) {
+  if (error) {
+    console.error(error);
+  } else {
+    console.log('API called successfully.');
+  }
+};
+api.sendMoney(bodyauthorization, callback);
+</code></pre>
+                            </div>
+
+                            <!--<div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-angular">
+              <pre class="prettyprint language-json prettyprinted" data-type="json"><code>Coming Soon!</code></pre>
+            </div>-->
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-csharp">
+                              <pre class="prettyprint"><code class="language-cs">using System;
+using System.Diagnostics;
+using IO.Swagger.Api;
+using IO.Swagger.Client;
+using IO.Swagger.Model;
+
+namespace Example
+{
+    public class sendMoneyExample
+    {
+        public void main()
+        {
+
+            var apiInstance = new ZarzadzanieKontemApi();
+            var body = new Account_body(); // Account_body | Dane przelewu
+            var authorization = authorization_example;  // String | Token sesji w formacie "Bearer {TOKEN}"
+
+            try
+            {
+                // [CLIENT ONLY] Przelej kase
+                apiInstance.sendMoney(body, authorization);
+            }
+            catch (Exception e)
+            {
+                Debug.Print("Exception when calling ZarzadzanieKontemApi.sendMoney: " + e.Message );
+            }
+        }
+    }
+}
+</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-php">
+                              <pre class="prettyprint"><code class="language-php"><&#63;php
+require_once(__DIR__ . '/vendor/autoload.php');
+
+$api_instance = new Swagger\Client\ApiZarzadzanieKontemApi();
+$body = ; // Account_body | Dane przelewu
+$authorization = authorization_example; // String | Token sesji w formacie "Bearer {TOKEN}"
+
+try {
+    $api_instance->sendMoney($body, $authorization);
+} catch (Exception $e) {
+    echo 'Exception when calling ZarzadzanieKontemApi->sendMoney: ', $e->getMessage(), PHP_EOL;
+}
+?></code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-perl">
+                              <pre class="prettyprint"><code class="language-perl">use Data::Dumper;
+use WWW::SwaggerClient::Configuration;
+use WWW::SwaggerClient::ZarzadzanieKontemApi;
+
+my $api_instance = WWW::SwaggerClient::ZarzadzanieKontemApi->new();
+my $body = WWW::SwaggerClient::Object::Account_body->new(); # Account_body | Dane przelewu
+my $authorization = authorization_example; # String | Token sesji w formacie "Bearer {TOKEN}"
+
+eval { 
+    $api_instance->sendMoney(body => $body, authorization => $authorization);
+};
+if ($@) {
+    warn "Exception when calling ZarzadzanieKontemApi->sendMoney: $@\n";
+}</code></pre>
+                            </div>
+
+                            <div class="tab-pane" id="examples-ZarzadzanieKontem-sendMoney-0-python">
+                              <pre class="prettyprint"><code class="language-python">from __future__ import print_statement
+import time
+import swagger_client
+from swagger_client.rest import ApiException
+from pprint import pprint
+
+# create an instance of the API class
+api_instance = swagger_client.ZarzadzanieKontemApi()
+body =  # Account_body | Dane przelewu
+authorization = authorization_example # String | Token sesji w formacie "Bearer {TOKEN}"
+
+try: 
+    # [CLIENT ONLY] Przelej kase
+    api_instance.send_money(body, authorization)
+except ApiException as e:
+    print("Exception when calling ZarzadzanieKontemApi->sendMoney: %s\n" % e)</code></pre>
+                            </div>
+                          </div>
+
+                          <h2>Parameters</h2>
+
+
+                            <div class="methodsubtabletitle">Header parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                  <tr><td style="width:150px;">Authorization*</td>
+                                  <td>
+                                  
+                                  
+                                      <div id="d2e199_sendMoney_authorization">
+                                          <div class="json-schema-view">
+                                              <div class="primitive">
+                                                  <span class="type">
+                                                      String
+                                                  </span>
+                                  
+                                                      <div class="inner description">
+                                                          Token sesji w formacie &quot;Bearer {TOKEN}&quot;
+                                                      </div>
+                                              </div>
+                                                  <div class="inner required">
+                                                      Required
+                                                  </div>
+                                          </div>
+                                      </div>
+                                  </td>
+                                  </tr>
+                            </table>
+
+                            <div class="methodsubtabletitle">Body parameters</div>
+                            <table id="methodsubtable">
+                              <tr>
+                                <th width="150px">Name</th>
+                                <th>Description</th>
+                              </tr>
+                                <tr><td style="width:150px;">body <span style="color:red;">*</span></td>
+                                <td>
+                                
+                                
+                                <script>
+                                $(document).ready(function() {
+                                  var schemaWrapper = {
+  "description" : "Dane przelewu",
+  "content" : {
+    "application/json" : {
+      "schema" : {
+        "$ref" : "#/components/schemas/account_body"
+      }
+    }
+  },
+  "required" : true
+};
+                                  var schema = schemaWrapper.content["application/json"].schema;
+                                  if (schema.$ref != null) {
+                                    schema = defsParser.$refs.get(schema.$ref);
+                                  } else {
+                                    schemaWrapper.components = {};
+                                    schemaWrapper.components.schemas = Object.assign({}, defs);
+                                    $RefParser.dereference(schemaWrapper).catch(function(err) {
+                                      console.log(err);
+                                    });
+                                  }
+                                
+                                  var view = new JSONSchemaView(schema,2,{isBodyParam: true});
+                                  var result = $('#d2e199_sendMoney_body');
+                                  result.empty();
+                                  result.append(view.render());
+                                });
+                                </script>
+                                <div id="d2e199_sendMoney_body"></div>
+                                </td>
+                                </tr>
+                            </table>
+
+
+
+                          <h2>Responses</h2>
+                            <h3> Status: 200 - Przelew poszedl </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 400 - Dane przelewu sie nie zgadzaja </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
+                            </div>
+
+                            <h3> Status: 500 - Cos poszlo nie tak </h3>
+
+                            <ul class="nav nav-tabs nav-tabs-examples" >
+                            </ul>
+
+                            <div class="tab-content" style='margin-bottom: 10px;'>
                             </div>
 
                         </article>
