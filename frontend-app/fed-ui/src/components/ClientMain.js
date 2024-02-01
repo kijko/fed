@@ -1,14 +1,42 @@
 // ClientMain.js
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './main.css';
+import { getAccountData } from '../client.js'
+import { useNavigate } from 'react-router-dom';
+import { logOut } from '../auth.js'
 
 const ClientMain = () => {
+	const [accountData, setAccountData] = useState({
+		accountNumber: '',
+		login: '',
+		firstName: '',
+		lastName: '',
+		balance: '',
+	});
+	const [outboundTransfers, setOutboundTransfers] = useState([])
+	const [inboundTransfers, setInboundTransfers] = useState([])
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		getAccountData().then(data => {
+			console.log(data);
+			setAccountData(data);
+			setOutboundTransfers(data.outboundTransfers);
+			setInboundTransfers(data.inboundTransfer);
+			// setOutboundTransfers(data.outboundTransfers.sort((t1, t2) => t1.requestedAt.localCompare(t2.requestedAt)));
+			// setInboundTransfers(data.inboundTransfer.sort((t1, t2) => t1.requestedAt.localCompare(t2.requestedAt)));
+		});
+
+		return () => {};
+	}, [])
+
+	const handleLogOut = () => logOut().then(() => navigate('/login'));
 	return (
 		<div className='client-main'>
 			<div className='user-info'>
-				<h2>Mirek Kowalski</h2>
-				<button>Wyloguj</button>
+				<h2>Klient</h2>
+				<button onClick={() => handleLogOut()}>Wyloguj</button>
 			</div>
 
 			<div className='account-info'>
@@ -22,14 +50,14 @@ const ClientMain = () => {
 					</thead>
 					<tbody>
 						<tr>
-							<td>123456789</td>
-							<td>Mirek Kowalski</td>
-							<td>100zł</td>
+							<td>{ accountData.accountNumber }</td>
+							<td>{ accountData.firstName + ' ' + accountData.lastName }</td>
+							<td>{ accountData.balance + 'zł' }</td>
 						</tr>
 					</tbody>
 				</table>
 
-				<button className='new-transfer-button'>Nowy przelew</button>
+				<button className='new-transfer-button' onClick={() => navigate('/client/transfer')}>Nowy przelew</button>
 			</div>
 
 			<br></br>
@@ -48,13 +76,17 @@ const ClientMain = () => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>50zł</td>
-							<td>żona</td>
-							<td>2024-01-23</td>
-							<td>Zaksięgowany</td>
-						</tr>
+					{
+						outboundTransfers.map((t, i) =>
+								<tr key={i}>
+									<td>{ i + 1 }</td>
+									<td>{ t.amount }zł</td>
+									<td>{ t.toAccountNumber }</td>
+									<td>{ t.requestedAt }</td>
+									<td>{ t.status }</td>
+								</tr>
+						)
+					}
 					</tbody>
 				</table>
 			</div>
@@ -75,13 +107,17 @@ const ClientMain = () => {
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
-							<td>1</td>
-							<td>20000zł</td>
-							<td>szef</td>
-							<td>2024-01-23</td>
-							<td>Zaksięgowany</td>
-						</tr>
+					{
+						inboundTransfers.map((t, i) => 
+							<tr key={i}>
+								<td>{ i + 1 }</td>
+								<td>{ t.amount } zł</td>
+								<td>{ t.fromAccountNumber }</td>
+								<td>{ t.requestedAt }</td>
+								<td>{ t.status }</td>
+							</tr>
+						)
+					}
 					</tbody>
 				</table>
 			</div>

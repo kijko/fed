@@ -1,30 +1,34 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import './main.css';
+import { auth } from '../auth.js'
+import { useNavigate } from 'react-router-dom';
 
 function LoginForm() {
 	const [login, setLogin] = useState('');
 	const [password, setPassword] = useState('');
+	const navigate = useNavigate()
 
 	const handleSubmit = async (event) => {
 		event.preventDefault();
-		const domain = 'https://fed-app.azurewebsites.net';
-		//    const domain = 'http://localhost:8080'
-		try {
-			const response = await axios.post(`${domain}/api/sign-in`, {
-				login,
-				password,
-			});
-			console.log(response.data); // Handle the response as needed
-		} catch (error) {
-			console.error('Login error', error);
+
+		const userType = await auth(login, password);
+
+		if (userType === "ADMIN") {
+			navigate('/admin/list');
+		} else if (userType === "CLIENT") {
+			navigate('/client');
+		} else if (userType === "BANK_EMPLOYEE") {
+			navigate('/emp');
+		} else {
+			console.error("Unknown user type");
 		}
+
 	};
 
 	return (
 		<div className='App'>
 			<header className='App-header'>
-				<h1>Zaloguj się do FederacjaBank</h1>
+				<h1>Zaloguj się do systemu</h1>
 				<div className='login-form'>
 					<form onSubmit={handleSubmit}>
 						<input
