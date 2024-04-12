@@ -7,5 +7,6 @@ import reactor.core.publisher.Mono
 interface RouteHandler {
     default Mono<ServerResponse> get(ServerRequest request) { return Mono.empty() }
     default Mono<ServerResponse> post(ServerRequest request) { return Mono.empty() }
+    default Mono<ServerResponse> post2(ServerRequest request) { return Mono.empty() }
     default Mono<ServerResponse> patch(ServerRequest request) { return Mono.empty() }
 }

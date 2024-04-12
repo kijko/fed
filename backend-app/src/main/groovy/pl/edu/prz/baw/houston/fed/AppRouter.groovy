@@ -41,6 +41,10 @@ class AppRouter {
                         signInHandler::post
                 )
                 .route(
+                        POST("$API_BASE_PATH/register").and(accept(MediaType.APPLICATION_JSON)),
+                        userManagementHandler::post2
+                )
+                .route(
                         GET("$API_BASE_PATH/users"),
                         userManagementHandler::get
                 )
