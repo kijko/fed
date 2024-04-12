@@ -13,18 +13,11 @@ function RegisterForm() {
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
-		const userType = await register(login, password, firstName, lastName);
+		const response = await register(login, password, firstName, lastName);
 
-//		if (userType === "ADMIN") {
-//			navigate('/admin/list');
-//		} else if (userType === "CLIENT") {
-//			navigate('/client');
-//		} else if (userType === "BANK_EMPLOYEE") {
-//			navigate('/emp');
-//		} else {
-//			console.error("Unknown user type");
-//		}
-
+		if (response) {
+            navigate('/login');
+		}
 	};
 
 	return (
@@ -63,6 +56,7 @@ function RegisterForm() {
                         />
 
 						<button type='submit'>Zarejestruj się</button>
+						<button onClick={() => navigate('/login')}>Wróć</button>
 					</form>
 				</div>
 			</header>

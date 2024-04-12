@@ -44,6 +44,7 @@ function LoginForm() {
 							onChange={(e) => setPassword(e.target.value)}
 						/>
 						<button type='submit'>Log in</button>
+						<button onClick={() => navigate('/register')}>Zarejestruj się</button>
 					</form>
 				</div>
 			</header>
