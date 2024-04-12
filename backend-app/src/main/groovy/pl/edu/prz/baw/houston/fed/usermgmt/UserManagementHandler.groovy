@@ -109,6 +109,10 @@ class UserManagementHandler implements RouteHandler {
         String uuid = UUID.randomUUID().toString()
 
         Mono<UserResponse> responseBody = request.bodyToMono(UserRegisterRequest.class).flatMap {
+            if (it.firstname == null || it.firstname.trim().isEmpty() || it.lastname == null || it.lastname.trim().isEmpty() || it.login == null || it.login.trim().isEmpty() || it.password == null || it.password.trim().isEmpty()) {
+                throw new RuntimeException("you fucked up")
+            }
+
             Mono<UserResponse> res = Mono.from(ctx.transactionPublisher { trx ->
                 return Mono.from(
                         trx.dsl()
