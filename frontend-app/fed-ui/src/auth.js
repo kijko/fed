@@ -5,6 +5,21 @@ export function getToken() {
     return localStorage.getItem('token')
 }
 
+export async function register(login, password, firstname, lastname) {
+		try {
+			const response = await axios.post(`${backendUrl}/api/register`, {
+				login,
+				password,
+				firstname,
+				lastname
+			});
+
+            return response.data;
+		} catch (error) {
+			console.error('Register error', error);
+		}
+}
+
 export async function auth(login, password) {
 		try {
 			const response = await axios.post(`${backendUrl}/api/sign-in`, {

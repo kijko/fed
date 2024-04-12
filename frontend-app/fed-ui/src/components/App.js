@@ -1,5 +1,6 @@
 import './main.css';
 import LoginForm from './LoginForm';
+import RegisterForm from './RegisterForm';
 import AdminListUser from './AdminListUser';
 import AdminAddUser from './AdminAddUser';
 import ClientMain from './ClientMain';
@@ -13,6 +14,7 @@ function App() {
 			<Routes>
 				<Route path="/" element={<Navigate to="/login" replace />}/>
 				<Route path='/login' element={<LoginForm />} />
+				<Route path='/register' element={<RegisterForm />} />
 				<Route path='/admin/list' element={<AdminListUser />} />
 				<Route path='/admin/add-user' element={<AdminAddUser />} />
 				<Route path='/client' element={<ClientMain />} />
